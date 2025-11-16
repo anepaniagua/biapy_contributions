@@ -1,0 +1,62 @@
+SYSTEM:
+    NUM_CPUS: 2
+    
+AUGMENTOR:
+  ENABLE: true
+  HFLIP: true
+  RANDOM_ROT: true
+  VFLIP: true
+
+DATA:
+  PATCH_SIZE: (256, 256, 1)
+  TEST:
+    GT_PATH: /data2/apaniagua/datasets/lucchi_2d/test/y
+    IN_MEMORY: true
+    LOAD_GT: true
+    PADDING: (32, 32)
+    PATH: /data2/apaniagua/datasets/lucchi_2d/test/x
+  TRAIN:
+    GT_PATH: /data2/apaniagua/datasets/lucchi_2d/train/y
+    IN_MEMORY: true
+    MINIMUM_FOREGROUND_PER: 0.01
+    PATH: /data2/apaniagua/datasets/lucchi_2d/train/x
+  VAL:
+    FROM_TRAIN: true
+    RANDOM: true
+    SPLIT_TRAIN: 0.1
+MODEL:
+  ARCHITECTURE: unext_v2
+  FEATURE_MAPS:
+  - 16
+  - 32
+  - 64
+  - 128
+  - 256
+  LOAD_CHECKPOINT: false
+  N_CLASSES: 2
+  SOURCE: biapy
+  UPSAMPLE_LAYER: convtranspose
+  CONVNEXT_LAYERS:
+  - 2
+  - 2
+  - 2
+  - 2
+  - 2
+  CONVNEXT_SD_PROB: 0.6
+  CONVNEXT_LAYER_SCALE: 0.000001
+PROBLEM:
+  NDIM: 2D
+  TYPE: SEMANTIC_SEG
+TEST:
+  AUGMENTATION: false
+  ENABLE: true
+  FULL_IMG: true
+TRAIN:
+  ENABLE: True
+  OPTIMIZER: ADAMW
+  LR: 0.002
+  BATCH_SIZE: 9
+  EPOCHS: 360
+  PATIENCE: 50
+  LR_SCHEDULER:
+      NAME: "onecycle"
